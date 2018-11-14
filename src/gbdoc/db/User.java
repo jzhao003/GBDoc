@@ -26,8 +26,11 @@ import javax.sql.DataSource;
 
 @Entity(name = "user")
 @Table(name = "user")
-public class User {
-	public static SimplePoJoDAO dao = new SimplePoJoDAO(User.class);;
+public class User implements ISimplePoJo {
+@Override
+		public void setId(long id) {
+			this.id = id;
+		}	public static SimplePoJoDAO dao = new SimplePoJoDAO(User.class);;
 
 // ====User code begins here====
 // ====User code ends here====

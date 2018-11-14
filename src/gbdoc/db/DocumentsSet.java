@@ -26,8 +26,11 @@ import javax.sql.DataSource;
 
 @Entity(name = "documents_set")
 @Table(name = "documents_set")
-public class DocumentsSet {
-	public static SimplePoJoDAO dao = new SimplePoJoDAO(DocumentsSet.class);;
+public class DocumentsSet implements ISimplePoJo {
+@Override
+		public void setId(long id) {
+			this.id = id;
+		}	public static SimplePoJoDAO dao = new SimplePoJoDAO(DocumentsSet.class);;
 
 	@Id()
 	@GeneratedValue()

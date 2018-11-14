@@ -26,8 +26,11 @@ import javax.sql.DataSource;
 
 @Entity(name = "standard")
 @Table(name = "standard")
-public class Standard {
-	public static SimplePoJoDAO dao = new SimplePoJoDAO(Standard.class);;
+public class Standard implements ISimplePoJo {
+@Override
+		public void setId(long id) {
+			this.id = id;
+		}	public static SimplePoJoDAO dao = new SimplePoJoDAO(Standard.class);;
 
 	@Id()
 	@GeneratedValue()
@@ -35,10 +38,10 @@ public class Standard {
 	public Long id = null;
 
 	@Column(name = "created_on")
-	public Timestamp created_on = null;
+	public Timestamp created_on = new Timestamp(System.currentTimeMillis());
 
 	@Column(name = "updated_on")
-	public Timestamp updated_on = null;
+	public Timestamp updated_on = new Timestamp(System.currentTimeMillis());
 
 	@Column(name = "created_by")
 	public Long created_by = null;
