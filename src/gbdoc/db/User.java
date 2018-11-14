@@ -32,6 +32,29 @@ public class User implements ISimplePoJo {
 			this.id = id;
 		}	public static SimplePoJoDAO dao = new SimplePoJoDAO(User.class);;
 
+	@Id()
+	@GeneratedValue()
+	@Column(name = "id")
+	public Long id = null;
+
+	@Column(name = "name")
+	public String name = null;
+
+	@Column(name = "role")
+	public String role = null;
+
+	@Column(name = "created_on")
+	public Timestamp created_on = null;
+
+	@Column(name = "updated_on")
+	public Timestamp updated_on = null;
+
+	@Column(name = "created_by")
+	public Long created_by = null;
+
+	@Column(name = "updated_by")
+	public Long updated_by = null;
+
 // ====User code begins here====
 // ====User code ends here====
 }
