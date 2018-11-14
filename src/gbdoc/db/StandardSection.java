@@ -26,11 +26,11 @@ import javax.sql.DataSource;
 
 @Entity(name = "standard_section")
 @Table(name = "standard_section")
-public class standardSection implements ISimplePoJo {
+public class StandardSection implements ISimplePoJo {
 @Override
 		public void setId(long id) {
 			this.id = id;
-		}	public static SimplePoJoDAO dao = new SimplePoJoDAO(standardSection.class);;
+		}	public static SimplePoJoDAO dao = new SimplePoJoDAO(StandardSection.class);;
 
 	@Id()
 	@GeneratedValue()
