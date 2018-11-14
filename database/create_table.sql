@@ -22,8 +22,8 @@ CREATE TABLE document ( -- 保存最终完成的文档信息(单个文件)
 
 CREATE TABLE standard ( -- 标准手册
     id bigint NOT NULL AUTO_INCREMENT,
-	created_on datetime,
-    updated_on datetime,
+	created_on datetime not null default CURRENT_TIMESTAMP(),
+    updated_on datetime not null default CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
     created_by bigint,
     updated_by bigint,
     title varchar(50), -- 标准手册名称，如：19489标准管理手册
