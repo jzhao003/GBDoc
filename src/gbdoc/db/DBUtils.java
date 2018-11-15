@@ -16,7 +16,7 @@ public class DBUtils {
 
 	public static String dbUrl = "jdbc:mysql://localhost:3306/gb-doc?useUnicode=true&characterEncoding=UTF-8";
 	public static String dbUser = "root";
-	public static String dbPassword = "123qwe";
+	public static String dbPassword = "";
 
 	public static HikariDataSource makeNewHikariDataSource() {
 		HikariConfig config = new HikariConfig();
