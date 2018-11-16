@@ -1,9 +1,11 @@
 package gbdoc.base;
 
-import gbdoc.db.Standard;
-import gbdoc.handlers.ListAllHandler;
-
 import org.glassfish.grizzly.http.server.HttpServer;
+
+import gbdoc.db.Standard;
+import gbdoc.handlers.CreateRecordsHandler;
+import gbdoc.handlers.HtmlHandler;
+import gbdoc.handlers.ListAllHandler;
 
 public class Main {
 	public static void main(String[] args) {
@@ -16,7 +18,14 @@ public class Main {
 		server.getServerConfiguration().addHttpHandler(
 				new ListAllHandler(Standard.class, appCtx),
 				"/list-all-standards");
+		server.getServerConfiguration().addHttpHandler(
+				new HtmlHandler(),"/app/hl");
 
+
+		// curl -XPOST -d'a=1&b=11' 'http://localhost:8777/add'
+		server.getServerConfiguration()
+				.addHttpHandler(new CreateRecordsHandler(Standard.class), "/add");
+		
 		try {
 
 			server.start();
