@@ -42,7 +42,7 @@ public class Standard implements ISimplePoJo {
 	@Column(name = "title")
 	public String title = null;
 
-	@QueryStringField()
+	@QueryStringField(required=false)
 	@Column(name = "template_location")
 	public String template_location = null;
 

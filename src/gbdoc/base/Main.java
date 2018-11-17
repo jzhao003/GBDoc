@@ -9,23 +9,18 @@ import gbdoc.handlers.ListAllHandler;
 
 public class Main {
 	public static void main(String[] args) {
-
 		ApplicationContext appCtx = new ApplicationContext();
 
 		HttpServer server = HttpServer.createSimpleServer("0.0.0.0", 8777);
 
 		// curl -XGET 'http://localhost:8777/list-all-standards'
-		server.getServerConfiguration().addHttpHandler(
-				new ListAllHandler(Standard.class, appCtx),
+		server.getServerConfiguration().addHttpHandler(new ListAllHandler(Standard.class, appCtx),
 				"/list-all-standards");
-		server.getServerConfiguration().addHttpHandler(
-				new HtmlHandler(),"/app/hl");
+		server.getServerConfiguration().addHttpHandler(new HtmlHandler(), "/app/hl");
 
+		// curl -XPOST -d 'title=1&template_location=11' 'http://localhost:8777/add'
+		server.getServerConfiguration().addHttpHandler(new CreateRecordsHandler(Standard.class), "/add");
 
-		// curl -XPOST -d'a=1&b=11' 'http://localhost:8777/add'
-		server.getServerConfiguration()
-				.addHttpHandler(new CreateRecordsHandler(Standard.class), "/add");
-		
 		try {
 
 			server.start();
