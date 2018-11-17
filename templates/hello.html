@@ -1,0 +1,72 @@
+<html>
+<header>
+	<title>This is title</title>
+	<meta charset="utf-8">
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</header>
+<body>
+	Hello {{ var }}
+
+<textarea rows="4" cols="50" id="standard_title">
+{{ text }} 
+</textarea>
+
+
+
+<button type="button" onclick="createNewstandard()" id="create_standard_button">创建标准</button>
+<div hidden id="result"></div>
+
+
+<div style="background-color: lightblue">
+	<h3>输入目录结构</h3>
+	<textarea rows="20" cols="500" id="standard_tree"></textarea>
+</div>
+
+<div>
+<button type="button" onclick="createSection()" id="create_tree_button">创建目录</button>
+</div>
+
+</body>
+</html>
+
+<script>
+function createSection(){
+	var starand_id = $("#result").data("standard_id");
+	var section = $("#standard_tree").val();
+	$.post("http://localhost:8777/section", {
+		section_number : section,
+		standard_id : starand_id
+	}, function(response) {
+		console.log(response.status); // John
+		console.log(response.data.id); // 2pm
+		//$( "#result" ).empty().append(response.data.id);
+		//$("#result").data("standard_id", response.data.id);
+	}, "json");
+}
+
+function createNewstandard() {
+	var standard_title = $("#standard_title").val()
+	// create a record in db, standard table
+	$.post("http://localhost:8777/add", {
+		title : standard_title,
+		template_location : 12344
+	}, function(response) {
+		console.log(response.status); // John
+		console.log(response.data.id); // 2pm
+		//$( "#result" ).empty().append(response.data.id);
+		$("#result").data("standard_id", response.data.id);
+	}, "json");
+	$("#create_standard_button").hide()
+	$("#standard_title").hide()
+		//var posting = $.post( "http://localhost:8777/add", { title:standard_title , template_location:12344 });
+		//posting.done(function( data ) {
+		//   var content = $( data ).find( "#status" );
+		//   alert(content);
+		//   $( "#result" ).empty().append( content );
+		// });
+		
+		//
+		//$("#lable_1").show()
+		//alert($("#lable_1").text)
+}
+</script>
