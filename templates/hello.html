@@ -34,7 +34,7 @@ function createSection(){
 	var starand_id = $("#result").data("standard_id");
 	var section = $("#standard_tree").val();
 	$.post("http://localhost:8777/section", {
-		section_number : section,
+		sections : section,
 		standard_id : starand_id
 	}, function(response) {
 		console.log(response.status); // John
