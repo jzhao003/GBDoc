@@ -10,14 +10,17 @@ import org.glassfish.grizzly.http.server.Response;
 import org.glassfish.grizzly.http.util.Parameters;
 
 import gubo.db.ISimplePoJo;
+import gubo.http.grizzly.handlers.CreateSimplePojoHandler;
 
-public class CreateSectionHandler extends CreateRecordsHandler {
+public class CreateSectionHandler extends CreateSimplePojoHandler {
 
 	public CreateSectionHandler(Class<? extends ISimplePoJo> clazz) {
 		super(clazz);
 		// TODO Auto-generated constructor stub
 	}
-	
+//	public CreateSectionHandler(ApplicationContext clazz){
+//		
+//	}
 //	public static void main(String args[]) {
 ////		CreateSectionHandler h = new CreateSectionHandler();
 //		formatSection("1.1  前言\n" + 
@@ -71,6 +74,11 @@ public class CreateSectionHandler extends CreateRecordsHandler {
 				strandId = request.getParameter(pn);
 			}
 		}
+		
+		
+		////////
+		
+		
 		Parameters para = new Parameters();
 		
 		for (Map.Entry<String,String> entry : section.entrySet()) {
@@ -81,6 +89,8 @@ public class CreateSectionHandler extends CreateRecordsHandler {
 			para.addParameter("section_content", entry.getValue());
 			request.setRequestParameters(para);
 			super.doPost(request, response);
+			
+//			DBUtils.
 		}
 		
 		return null;

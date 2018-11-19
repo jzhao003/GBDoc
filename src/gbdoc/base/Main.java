@@ -5,7 +5,7 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import gbdoc.db.Standard;
 import gbdoc.db.StandardSection;
 import gbdoc.handlers.CreateRecordsHandler;
-import gbdoc.handlers.CreateSectionHandler;
+import gbdoc.handlers.CreateStandardSectionHanlder;
 import gbdoc.handlers.GetFromStanardTableHandler;
 import gbdoc.handlers.HtmlHandler;
 import gbdoc.handlers.ListAllHandler;
@@ -29,9 +29,10 @@ public class Main {
 		server.getServerConfiguration().addHttpHandler(new GetFromStanardTableHandler(appCtx), "/id");
 
 		
-		server.getServerConfiguration().addHttpHandler(new CreateSectionHandler(StandardSection.class), "/section");
+//		server.getServerConfiguration().addHttpHandler(new CreateSectionHandler(StandardSection.class), "/section");
 
-		
+		server.getServerConfiguration().addHttpHandler(new CreateStandardSectionHanlder(appCtx), "/section");
+
 		//curl http://cc.test.org/api/test.do?param1=p1\&param2=p2\&param3=p3
 		
 		try {

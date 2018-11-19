@@ -17,13 +17,19 @@
 <div hidden id="result"></div>
 
 
-<div style="background-color: lightblue">
+<div id="input_section_content" style="background-color: lightblue">
 	<h3>输入目录结构</h3>
 	<textarea rows="20" cols="500" id="standard_tree"></textarea>
 </div>
 
 <div>
-<button type="button" onclick="createSection()" id="create_tree_button">创建目录</button>
+<button type="button" onclick="createSection()" id="create_section_button">创建目录</button>
+</div>
+
+
+<div id="show_section_content" hidden style="background-color: lightblue">
+	<h3>显示目录结构</h3>
+	
 </div>
 
 </body>
@@ -31,17 +37,19 @@
 
 <script>
 function createSection(){
+	// create records in db, standard_section table
 	var starand_id = $("#result").data("standard_id");
 	var section = $("#standard_tree").val();
 	$.post("http://localhost:8777/section", {
 		sections : section,
 		standard_id : starand_id
 	}, function(response) {
-		console.log(response.status); // John
-		console.log(response.data.id); // 2pm
-		//$( "#result" ).empty().append(response.data.id);
-		//$("#result").data("standard_id", response.data.id);
+		console.log(response.status); 
+		console.log(response.data.id); 
 	}, "json");
+	$("#create_section_button").hide()
+	$("#input_section_content").hide()
+	$("#show_section_content").show()
 }
 
 function createNewstandard() {
@@ -51,22 +59,11 @@ function createNewstandard() {
 		title : standard_title,
 		template_location : 12344
 	}, function(response) {
-		console.log(response.status); // John
-		console.log(response.data.id); // 2pm
-		//$( "#result" ).empty().append(response.data.id);
+		console.log(response.status); 
+		console.log(response.data.id); 
 		$("#result").data("standard_id", response.data.id);
 	}, "json");
 	$("#create_standard_button").hide()
 	$("#standard_title").hide()
-		//var posting = $.post( "http://localhost:8777/add", { title:standard_title , template_location:12344 });
-		//posting.done(function( data ) {
-		//   var content = $( data ).find( "#status" );
-		//   alert(content);
-		//   $( "#result" ).empty().append( content );
-		// });
-		
-		//
-		//$("#lable_1").show()
-		//alert($("#lable_1").text)
 }
 </script>
