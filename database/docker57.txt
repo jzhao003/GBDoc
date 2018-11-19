@@ -1,0 +1,13 @@
+启动docker里的mysql5.7:
+	docker run -p 3307:3306 -d --name mysql57.2 -e MYSQL_ROOT_PASSWORD=password -e MYSQL_ALLOW_EMPTY_PASSWORD=yes mysql/mysql-server:5.7
+
+从mysql5.7的docker container 启动bash:
+	docker exec -it mysql57 bash
+	 	# 让container里的mysql 允许 container外的客户端 连进来: 
+		mysql
+		CREATE USER 'root'@'%' IDENTIFIED BY 'password'; 
+		GRANT ALL PRIVILEGES ON * . * TO 'root'@'%';
+
+然后就可以从命令行连了：
+mysql --port=3307 --host=127.0.0.1 -uroot -p
+主意--host=后面一定要是127.0.0.1 不能是 localhost
