@@ -6,6 +6,7 @@ import gbdoc.db.Standard;
 import gbdoc.db.StandardSection;
 import gbdoc.handlers.CreateRecordsHandler;
 import gbdoc.handlers.CreateStandardSectionHanlder;
+import gbdoc.handlers.DocFilteredListHandler;
 import gbdoc.handlers.GetFromStanardTableHandler;
 import gbdoc.handlers.HtmlHandler;
 import gbdoc.handlers.ListAllHandler;
@@ -33,7 +34,8 @@ public class Main {
 
 		server.getServerConfiguration().addHttpHandler(new CreateStandardSectionHanlder(appCtx), "/section");
 
-		//curl http://cc.test.org/api/test.do?param1=p1\&param2=p2\&param3=p3
+		// curl -XGET 'http://localhost:8777/sections?eq__standard_id=60'
+		server.getServerConfiguration().addHttpHandler(new DocFilteredListHandler(StandardSection.class),"/sections");
 		
 		try {
 
