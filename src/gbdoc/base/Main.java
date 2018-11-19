@@ -1,7 +1,7 @@
 package gbdoc.base;
 
 import org.glassfish.grizzly.http.server.HttpServer;
-
+import org.glassfish.grizzly.http.server.StaticHttpHandler;
 import gbdoc.db.Standard;
 import gbdoc.db.StandardSection;
 import gbdoc.handlers.CreateRecordsHandler;
@@ -29,6 +29,8 @@ public class Main {
 		// curl -XGET 'http://localhost:8777/id?id=42'
 		server.getServerConfiguration().addHttpHandler(new GetFromStanardTableHandler(appCtx), "/id");
 
+		server.getServerConfiguration().addHttpHandler(
+                new StaticHttpHandler("./templates"), "/static");
 		
 //		server.getServerConfiguration().addHttpHandler(new CreateSectionHandler(StandardSection.class), "/section");
 
