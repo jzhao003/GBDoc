@@ -1,0 +1,73 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/static/bootstrap.min.css">
+<script type='text/javascript' src="https://code.jquery.com/jquery.min.js"></script>
+<link rel="stylesheet" href="/static/bootstrap-treeview.css">
+<script type='text/javascript' src="/static/bootstrap-treeview.js"></script>
+<title> test tree</title>
+</head>
+<body>
+<p>hello world1121</p>
+<button type="button" onclick="buildSectionTree()" id="buildSectionTree">显示目录</button>
+<div id="default-tree" hidden></div>
+
+wwww
+</body>
+</html>
+
+<script>
+/* var myTree = [
+    {
+      text: "Item 1",
+      nodes: [
+        {
+          text: "Item 1-1",
+          nodes: [
+            {
+              text: "Item 1-1-1"
+            },
+            {
+              text: "Item 1-1-2"
+            }
+          ]
+        },
+        {
+          text: "Item 1-2"
+        }
+      ]
+    },
+    {
+      text: "Item 2"
+    },
+    {
+      text: "Item 3"
+    }
+];
+
+$('#default-tree').treeview({
+	  data: myTree
+	}); */
+
+	
+	
+	
+function buildSectionTree() {
+	$.get("http://localhost:8777/sections?eq__standard_id=60",function(response) {
+		console.log(response.status); 
+		console.log(response.data); 
+		buildTree(response.data);
+	})
+}
+function buildTree(sections) {
+	/* jQuery.each(data,function(){
+		var entityLine = '<div> aaa </div>';
+		console.log(this.id); 
+		jQuery("block").append(entityLine);
+	}) */
+	$('#default-tree').show()
+	$('#default-tree').treeview({
+		  data: sections
+		});
+}
+</script>

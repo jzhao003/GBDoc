@@ -2,12 +2,12 @@
 <head>
 	<title>This is title</title>
 	<meta charset="utf-8">
-	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-	<link rel="stylesheet" href="bootstrap.min.css">
-	<script type='text/javascript' src="//code.jquery.com/jquery.min.js"></script>
+	<!-- <script src="https://code.jquery.com/jquery-1.10.2.js"></script> -->
+	<link rel="stylesheet" href="/static/bootstrap.min.css">
+	<script type='text/javascript' src="https://code.jquery.com/jquery.min.js"></script>
 	
-	<link rel="stylesheet" href="bootstrap-treeview.css">
-	<script type='text/javascript' src="bootstrap-treeview.js"></script>
+	<link rel="stylesheet" href="/static/bootstrap-treeview.css">
+	<script type='text/javascript' src="/static/bootstrap-treeview.js"></script>
 
 	<style>
 ul, #myUL {
@@ -54,6 +54,8 @@ ul, #myUL {
 
 <body>
 	Hello {{ var }}
+
+<div class="col-sm-10">
 
 <textarea rows="4" cols="50" id="standard_title">
 {{ text }} 
@@ -103,9 +105,9 @@ ul, #myUL {
 </div>
 
 
-<div id="default-tree"></div>
+<div class="col-sm-4" id="default-tree"></div>
 
-
+</div>
 </body>
 </html>
 
@@ -173,6 +175,10 @@ $( document ).ready(function() {
     $('#default-tree').treeview({
   	  data: myTree
   	});
+    
+    $('#default-tree').treeview({
+    	  data: myTree
+    	});
 });
 
 
