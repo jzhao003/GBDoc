@@ -28,8 +28,11 @@ public class Main {
 		// curl -XGET 'http://localhost:8777/id?id=42'
 		server.getServerConfiguration().addHttpHandler(new GetFromStanardTableHandler(appCtx), "/id");
 
+		
+		StaticHttpHandler staticHandler = new StaticHttpHandler("./templates");
+		staticHandler.setFileCacheEnabled(false);
 		server.getServerConfiguration().addHttpHandler(
-                new StaticHttpHandler("./templates"), "/static");
+		        staticHandler, "/static");
 		
 //		server.getServerConfiguration().addHttpHandler(new CreateSectionHandler(StandardSection.class), "/section");
 
