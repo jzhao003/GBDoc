@@ -4,25 +4,13 @@ package gbdoc.db;
 import gubo.db.ISimplePoJo;
 import gubo.db.SimplePoJoDAO;
 import gubo.http.querystring.QueryStringField;
-import gubo.jdbc.mapping.InsertStatementGenerator;
-import gubo.jdbc.mapping.ResultSetMapper;
-import gubo.jdbc.mapping.UpdateStatementGenerator;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.math.BigDecimal;
-import javax.sql.DataSource;
 
 @Entity(name = "doc_template")
 @Table(name = "doc_template")
@@ -38,10 +26,10 @@ public class DocTemplate implements ISimplePoJo {
 	public Long id = null;
 
 	@Column(name = "created_on")
-	public Timestamp created_on = null;
+	public Timestamp created_on = new Timestamp(System.currentTimeMillis());
 
 	@Column(name = "updated_on")
-	public Timestamp updated_on = null;
+	public Timestamp updated_on = new Timestamp(System.currentTimeMillis());
 
 	@Column(name = "created_by")
 	public Long created_by = null;
@@ -49,12 +37,11 @@ public class DocTemplate implements ISimplePoJo {
 	@Column(name = "updated_by")
 	public Long updated_by = null;
 
-	/*
-	所属的目录项	
-	*/
+	@QueryStringField()
 	@Column(name = "standard_section_id")
 	public Long standard_section_id = null;
 
+	@QueryStringField()
 	@Column(name = "content")
 	public String content = null;
 

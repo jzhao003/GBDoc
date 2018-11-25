@@ -5,69 +5,65 @@
 <script type='text/javascript' src="https://code.jquery.com/jquery.min.js"></script>
 <link rel="stylesheet" href="/static/bootstrap-treeview.css">
 <script type='text/javascript' src="/static/bootstrap-treeview.js"></script>
+
 <title> test tree</title>
 </head>
+
 <body>
 <p>hello world1121</p>
 <button type="button" onclick="buildSectionTree()" id="buildSectionTree">显示目录</button>
-<div id="default-tree" hidden></div>
+<div id="default-tree" ></div>
 
-wwww
+<div id="template_edit" >
+<textarea id="template_text_area" rows="3" cols="20">
+</textarea>
+<button type="button" onclick="saveTemplate()" id="saveTemplate">保存模板</button>
+</div>
 </body>
 </html>
 
 <script>
-/* var myTree = [
-    {
-      text: "Item 1",
-      nodes: [
-        {
-          text: "Item 1-1",
-          nodes: [
-            {
-              text: "Item 1-1-1"
-            },
-            {
-              text: "Item 1-1-2"
-            }
-          ]
-        },
-        {
-          text: "Item 1-2"
-        }
-      ]
-    },
-    {
-      text: "Item 2"
-    },
-    {
-      text: "Item 3"
-    }
-];
+function saveTemplate() {
+	var template_content = $("#template_text_area").val()
+	console.log(selectNodeId); 
+	console.log(template_content); 
+	 
+	$.post("http://localhost:8777/DocTemplate", {
+		standard_section_id : selectNodeId,
+		content : template_content
+	}, function(response) {
+		console.log(response.status); 
+		console.log(response.data.id); 
+		$("#result").data("standard_id", response.data.id);
+	}, "json"); 
+}
 
-$('#default-tree').treeview({
-	  data: myTree
-	}); */
-
-	
-	
+// standard_section_id
+var selectNodeId;
 	
 function buildSectionTree() {
-	$.get("http://localhost:8777/sections?eq__standard_id=60",function(response) {
-		console.log(response.status); 
-		console.log(response.data); 
-		buildTree(response.data);
-	})
+	$.get("http://localhost:8777/sections?eq__standard_id=60&order_by=section_number",function(response) {
+		console.log(response.members);
+		buildTree(response.members);
+	}) 
 }
 function buildTree(sections) {
-	/* jQuery.each(data,function(){
-		var entityLine = '<div> aaa </div>';
-		console.log(this.id); 
-		jQuery("block").append(entityLine);
-	}) */
+
 	$('#default-tree').show()
 	$('#default-tree').treeview({
-		  data: sections
-		});
+        data: sections,
+        multiSelect: $('#chk-select-multi').is(':checked'),
+        onNodeSelected: function(event, node) {
+          $('#selectable-output').prepend('<p>' + node.text + ' was selected</p>');
+          console.log("selected: " + node.text);
+          console.log("selected: " + node.id);
+          selectNodeId = node.id
+        },
+        onNodeUnselected: function (event, node) {
+          $('#selectable-output').prepend('<p>' + node.text + ' was unselected</p>');
+         
+        }
+     }); 
 }
+
 </script>

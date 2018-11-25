@@ -78,35 +78,6 @@ ul, #myUL {
 
 
 
-<div id="show_section_content" style="background-color: lightblue">
-	<h3>显示目录结构</h3>
-	<ul id="myUL">
-	  <li><span class="caret">Beverages</span>
-	    <ul class="nested">
-	      <li>Water</li>
-	      <li>Coffee</li>
-	      <li><span class="caret">Tea</span>
-	        <ul class="nested">
-	          <li>Black Tea</li>
-	          <li>White Tea</li>
-	          <li><span class="caret">Green Tea</span>
-	            <ul class="nested">
-	              <li>Sencha</li>
-	              <li>Gyokuro</li>
-	              <li>Matcha</li>
-	              <li>Pi Lo Chun</li>
-	            </ul>
-	          </li>
-	        </ul>
-	      </li>
-	    </ul>
-	  </li>
-	</ul>
-</div>
-
-
-<div class="col-sm-4" id="default-tree"></div>
-
 </div>
 </body>
 </html>
@@ -143,83 +114,4 @@ function createNewstandard() {
 	$("#standard_title").hide()
 }
 
-var myTree = [
-    {
-      text: "Item 1",
-      nodes: [
-        {
-          text: "Item 1-1",
-          nodes: [
-            {
-              text: "Item 1-1-1"
-            },
-            {
-              text: "Item 1-1-2"
-            }
-          ]
-        },
-        {
-          text: "Item 1-2"
-        }
-      ]
-    },
-    {
-      text: "Item 2"
-    },
-    {
-      text: "Item 3"
-    }
-];
-$( document ).ready(function() {
-    console.log( "ready!" );
-    $('#default-tree').treeview({
-  	  data: myTree
-  	});
-    
-    $('#default-tree').treeview({
-    	  data: myTree
-    	});
-});
-
-
-
-	
-
-var datas=[
-    {id: 1, title: 'hello', parent: 0},
-    {id: 2, title: 'hello', parent: 0},
-    {id: 3, title: 'hello', parent: 1},
-    {id: 4, title: 'hello', parent: 3},
-    {id: 5, title: 'hello', parent: 4},
-    {id: 6, title: 'hello', parent: 4},
-    {id: 7, title: 'hello', parent: 3},
-    {id: 8, title: 'hello', parent: 2}
-]
-function getNestedChildren(arr, parent) {
-    var out = []
-    for(var i in arr) {
-        if(arr[i].parent == parent) {
-            var children = getNestedChildren(arr, arr[i].id)
-
-            if(children.length) {
-                arr[i].children = children
-            }
-            out.push(arr[i])
-        }
-    }
-    return out
-}
-
-console.log(getNestedChildren(datas,0))
-
-// section tree
-var toggler = document.getElementsByClassName("caret");
-var i;
-
-for (i = 0; i < toggler.length; i++) {
-  toggler[i].addEventListener("click", function() {
-    this.parentElement.querySelector(".nested").classList.toggle("active");
-    this.classList.toggle("caret-down");
-  });
-}
 </script>
