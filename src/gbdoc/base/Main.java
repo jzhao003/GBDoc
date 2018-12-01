@@ -9,6 +9,7 @@ import gbdoc.db.StandardSection;
 import gbdoc.handlers.CreateRecordsHandler;
 import gbdoc.handlers.CreateStandardSectionHanlder;
 import gbdoc.handlers.GetFromStanardTableHandler;
+import gbdoc.handlers.GetWordDocHandler;
 import gbdoc.handlers.HtmlHandler;
 import gbdoc.handlers.ListAllHandler;
 import gbdoc.handlers.SectionTreeListHandler;
@@ -47,6 +48,10 @@ public class Main {
 		
 		// insert into DocTemplate teble
 		server.getServerConfiguration().addHttpHandler(new CreateRecordsHandler(DocTemplate.class), "/DocTemplate");
+		
+		
+		// URL, http://localhost:8777/editTemplate
+		server.getServerConfiguration().addHttpHandler(new GetWordDocHandler(), "/editTemplate");
 		try {
 
 			server.start();

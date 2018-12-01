@@ -1,0 +1,75 @@
+<html>
+<header>
+	<title>This is title</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="/static/bootstrap.min.css">
+	<script type='text/javascript' src="https://code.jquery.com/jquery.min.js"></script>
+	<link rel="stylesheet" href="/static/bootstrap-treeview.css">
+	<script type='text/javascript' src="/static/bootstrap-treeview.js"></script>
+</header>
+<body>
+try to edit  
+
+<div id="edit_doc_div" >
+{{ var }}
+</div>
+
+<p id="demo"></p>
+
+<script>
+document.getElementById("demo").innerHTML = "Hello World!";
+</script>
+
+<div id="doc_save_div" >
+	<button type="button" onclick="saveContent()">Click Me!</button>
+</div>
+
+
+</body>
+</html>
+
+<script>
+function getCount(parent, getChildrensChildren){
+	// get the number of element in a div
+    var relevantChildren = 0;
+    var children = parent.childNodes.length;
+    for(var i=0; i < children; i++){
+        if(parent.childNodes[i].nodeType != 3){
+            if(getChildrensChildren)
+                relevantChildren += getCount(parent.childNodes[i],true);
+            relevantChildren++;
+        }
+    }
+    return relevantChildren;
+}
+
+function saveContent() {
+	var element = document.getElementById("edit_doc_div");
+	//alert(getCount(element, false)); // Simply one level
+	// get the count of Input element in the Div,
+	var count = getCount(element, false);
+	
+	// 
+	var inputValues = [];
+	for (var i=1;i<=count;i++) {
+		inputValues[i-1]=$("#id"+i).val();
+	}
+	// 提交更新 
+	$.post( "http://localhost:8777/editTemplate", { 'keywords': inputValues } );
+/* 
+	$.post("http://localhost:8777/editTemplate", {
+		title : standard_title,
+		template_location : 12344
+	}, function(response) {
+		console.log(response.status); 
+		console.log(response.data.id); 
+		$("#result").data("standard_id", response.data.id);
+	}, "json"); */
+}
+
+$.get("http://localhost:8777/editTemplate",function(response) {
+	console.log(response);
+	/*$("#doc_text_area").text(response);  
+	$("#doc_edit").text(response);*/
+}) 
+</script>
