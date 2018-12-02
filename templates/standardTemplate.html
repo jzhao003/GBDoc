@@ -1,0 +1,52 @@
+<html>
+<header>
+	<title>创建并编辑模板</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="/static/bootstrap.min.css">
+	<script type='text/javascript' src="https://code.jquery.com/jquery.min.js"></script>
+	<link rel="stylesheet" href="/static/bootstrap-treeview.css">
+	<script type='text/javascript' src="/static/bootstrap-treeview.js"></script>
+</header>
+<body>
+<div >
+	<a href="/app/hl">返回主界面</a>
+</div>
+
+请选择要添加模板的标准手册名称，如：19489对应管理手册
+<div >
+	<select id="standard-dropdown" name="locality"></select>
+</div>
+<div >
+	<button id="show_button" onclick="showSectionContent()">显示目录</button>
+</div>
+
+<div >
+上传模板
+<form action="/upload" method="post" enctype="multipart/form-data">
+	Description: <input name="description"/>
+	<br/>Select File: <input type="file" name="fileName"/>
+	<br/><input type="submit" value="Submit"/>
+</form>
+</div>
+</body>
+</html>
+
+<script>
+
+function showSectionContent() {
+	var e = document.getElementById("standard-dropdown");
+	var value = e.options[e.selectedIndex].value;
+	console.log(value)
+}
+
+let dropdown = $('#standard-dropdown');
+dropdown.empty();
+dropdown.append('<option selected="true" disabled>选择</option>');
+dropdown.prop('selectedIndex', 0);
+$.get("http://localhost:8777/list-all-standards",function(response) {
+	console.log(response)
+	 $.each(response.data, function (data) {
+		 dropdown.append($('<option></option>').attr('value', response.data[data].id).text(response.data[data].title));
+	 })
+}) 
+</script>

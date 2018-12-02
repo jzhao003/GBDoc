@@ -1,0 +1,75 @@
+<html>
+<header>
+	<title>创建并编辑标准手册</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="/static/bootstrap.min.css">
+	<script type='text/javascript' src="https://code.jquery.com/jquery.min.js"></script>
+	<link rel="stylesheet" href="/static/bootstrap-treeview.css">
+	<script type='text/javascript' src="/static/bootstrap-treeview.js"></script>
+</header>
+<body>
+<div >
+	<a href="/app/hl">返回主界面</a>
+</div>
+
+请输入标准手册名称，如：19489对应管理手册
+<div >
+	<input id="standard_title"></input>	
+</div>
+<div >
+	<button type="button" onclick="createNewstandard()" id="create_standard_button">创建标准</button>
+	<!-- 存储 standard_id -->
+	<div hidden id="result"></div>
+	
+</div>
+
+
+<div  ></div>
+
+<div id="standard_content_div" >
+	输入标准手册内容：
+	<textarea rows="4" cols="50" id="standard_content"></textarea>
+	<button type="button" onclick="createNewstandard()" id="create_standard_button">创建目录</button>
+</div>
+
+</body>
+</html>
+
+<script>
+function createNewstandard() {
+	// 创建标准：输入 标准  文件名， 如 19489对应管理手册 ， 保存到db
+	var standard_title = $("#standard_title").val()
+	// create a record in db, standard table
+	$.post("http://localhost:8777/addStandard", {
+		title : standard_title,
+		template_location : 12344
+	}, function(response) {
+		console.log(response.status); 
+		console.log(response.data.id); 
+		$("#result").data("standard_id", response.data.id);
+	}, "json");
+	$("#create_standard_button").hide() // 隐藏 ‘创建标准’ 按钮
+	$("#standard_title").hide()  // 隐藏 text 框
+}
+
+function createSection(){
+	// 创建目录，已经目录内容， 如 1.1 前言
+	// 输入必须是 数字开头，格式必须是 ，1.1.1，1.2， 7.1  ...
+	
+	// 从UI上取得 standardId
+	var starand_id = $("#result").data("standard_id");
+	// 从UI上取得输入的目录
+	var section = $("#standard_content").val();
+	
+	$.post("http://localhost:8777/section", {
+		sections : section,
+		standard_id : starand_id
+	}, function(response) {
+		console.log(response.status); 
+		console.log(response.data.id); 
+	}, "json");
+	/* $("#create_section_button").hide()
+	$("#input_section_content").hide()
+	$("#show_section_content").show() */
+}
+</script>

@@ -13,12 +13,15 @@ import gbdoc.handlers.GetWordDocHandler;
 import gbdoc.handlers.HtmlHandler;
 import gbdoc.handlers.ListAllHandler;
 import gbdoc.handlers.SectionTreeListHandler;
+import gbdoc.upload.UploaderHttpHandler;
 
 public class Main {
+	private static final int PORT = 8777;
+	
 	public static void main(String[] args) {
 		ApplicationContext appCtx = new ApplicationContext();
 
-		HttpServer server = HttpServer.createSimpleServer("0.0.0.0", 8777);
+		HttpServer server = HttpServer.createSimpleServer("0.0.0.0", PORT);
 
 		// curl -XGET 'http://localhost:8777/list-all-standards'
 		server.getServerConfiguration().addHttpHandler(new ListAllHandler(Standard.class, appCtx),
@@ -28,7 +31,7 @@ public class Main {
 		server.getServerConfiguration().addHttpHandler(new HtmlHandler(), "/app/hl");
 
 		// curl -XPOST -d 'title=1&template_location=11' 'http://localhost:8777/add'   insert into Standard table 
-		server.getServerConfiguration().addHttpHandler(new CreateRecordsHandler(Standard.class), "/add");
+		server.getServerConfiguration().addHttpHandler(new CreateRecordsHandler(Standard.class), "/addStandard");
 		
 		// get StanardTable record by id
 		// curl -XGET 'http://localhost:8777/id?id=42'
@@ -52,6 +55,13 @@ public class Main {
 		
 		// URL, http://localhost:8777/editTemplate
 		server.getServerConfiguration().addHttpHandler(new GetWordDocHandler(), "/editTemplate");
+		
+		
+		      
+        // Map the path /upload to the UploaderHttpHandler
+        server.getServerConfiguration().addHttpHandler(new UploaderHttpHandler(), "/upload");
+
+        
 		try {
 
 			server.start();
