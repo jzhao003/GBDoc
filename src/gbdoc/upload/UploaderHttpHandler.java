@@ -7,9 +7,11 @@ import java.io.Writer;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.glassfish.grizzly.EmptyCompletionHandler;
 import org.glassfish.grizzly.Grizzly;
 import org.glassfish.grizzly.ReadHandler;
+import org.glassfish.grizzly.http.io.NIOInputStream;
 import org.glassfish.grizzly.http.multipart.ContentDisposition;
 import org.glassfish.grizzly.http.multipart.MultipartEntry;
 import org.glassfish.grizzly.http.multipart.MultipartEntryHandler;
@@ -17,7 +19,12 @@ import org.glassfish.grizzly.http.multipart.MultipartScanner;
 import org.glassfish.grizzly.http.server.HttpHandler;
 import org.glassfish.grizzly.http.server.Request;
 import org.glassfish.grizzly.http.server.Response;
-import org.glassfish.grizzly.http.io.NIOInputStream;
+
+import gbdoc.db.DBUtils;
+import gbdoc.db.DocTemplate;
+import gubo.db.DaoManager;
+import gubo.db.ISimplePoJo;
+import gubo.db.SimplePoJoDAO;
 
 public class UploaderHttpHandler extends HttpHandler {
 	private static final Logger LOGGER = Grizzly.logger(UploaderHttpHandler.class);
@@ -114,7 +121,10 @@ public class UploaderHttpHandler extends HttpHandler {
                     multipartEntry.getContentDisposition();
             // get the multipart entry name
             final String name = contentDisposition.getDispositionParamUnquoted("name");
-
+            
+//            System.out.println(contentDisposition.getDispositionParamUnquoted("name"));
+//            System.out.println(contentDisposition.getDispositionParamUnquoted("sid"));
+//            System.out.println("=======================");
             // if the multipart entry contains a file content
             if (FILENAME_ENTRY.equals(name)) {
 
@@ -138,6 +148,20 @@ public class UploaderHttpHandler extends HttpHandler {
                         + "Skipping...", uploadNumber);
                 // skip the multipart entry
                 multipartEntry.skip();
+            }  else if ("id".equals(name)) { // if multipart entry contains a description field
+                LOGGER.log(Level.INFO, "Upload #{0}: description came. "
+                        + "Skipping...", uploadNumber);
+                final NIOInputStream inputStream = multipartEntry.getNIOInputStream();
+                inputStream.notifyAvailable(new ValueHandler(inputStream));
+                
+                // skip the multipart entry
+                //multipartEntry.skip();
+//                multipartEntry.getMultipartContext().getBoundary();
+//                multipartEntry.getContentDisposition().getDisposition();
+//                byte[] buf = new byte[2048];
+//                int readBytes = multipartEntry.getNIOInputStream().read(buf);
+//                String value = new String(buf,0,readBytes,"UTF-8");
+//                System.out.println(value);
             } else { // Unexpected entry?
                 LOGGER.log(Level.INFO, "Upload #{0}: unknown multipart entry. "
                         + "Skipping...", uploadNumber);
@@ -154,6 +178,45 @@ public class UploaderHttpHandler extends HttpHandler {
         int getBytesUploaded() {
             return uploadedBytesCounter.get();
         }
+    }
+    
+    private static class ValueHandler implements ReadHandler {
+    	private final byte[] buf;
+    	private final NIOInputStream inputStream;
+    	private ValueHandler(final NIOInputStream inputStream)
+                throws FileNotFoundException {
+
+            this.inputStream = inputStream;
+//            this.uploadedBytesCounter = uploadedBytesCounter;
+            buf = new byte[2048];
+        }
+		@Override
+		public void onAllDataRead() throws Exception {
+			// TODO Auto-generated method stub
+			while (inputStream.isReady()) {
+                // read the available bytes from input stream
+                final int readBytes = inputStream.read(buf);
+                // update the counter
+                String value = new String(buf,0,readBytes,"UTF-8");
+                System.out.println(value);
+            }
+		}
+		@Override
+		public void onDataAvailable() throws Exception {
+			// TODO Auto-generated method stub
+			while (inputStream.isReady()) {
+                // read the available bytes from input stream
+                final int readBytes = inputStream.read(buf);
+                // update the counter
+                String value = new String(buf,0,readBytes,"UTF-8");
+                System.out.println(value);
+            }
+		}
+		@Override
+		public void onError(Throwable arg0) {
+			// TODO Auto-generated method stub
+			
+		}
     }
 
     /**
@@ -184,7 +247,7 @@ public class UploaderHttpHandler extends HttpHandler {
                 throws FileNotFoundException {
 
             this.uploadNumber = uploadNumber;
-            fileOutputStream = new FileOutputStream("/Users/jzhao/work/workspace/myown/javaspace/GBDocGen/upload/"+filename);
+            fileOutputStream = new FileOutputStream("upload/"+filename);
             this.inputStream = inputStream;
             this.uploadedBytesCounter = uploadedBytesCounter;
             buf = new byte[2048];
@@ -248,7 +311,27 @@ public class UploaderHttpHandler extends HttpHandler {
             try {
                 // close file output stream
                 fileOutputStream.close();
-            } catch (IOException ignored) {
+                
+                
+                // call api to insert into db
+                DocTemplate newPojo = new DocTemplate();
+//                Long newid = InsertStatementGenerator.insertNew(dbconn, newPojo);
+//    			newPojo.setId(newid);
+//    			dbconn.commit();
+    			
+                // 取得standard_section_id
+//                for () {
+//                	
+//                }
+                
+    			DaoManager daoManager = new DaoManager();
+    			SimplePoJoDAO dao = daoManager.getDao(DocTemplate.class);
+    			newPojo.standard_id=1L;
+    			newPojo.standard_section_id=1L;
+//    			dao.insert(DBUtils.getDataSource(), newPojo);
+    			
+            } catch (Exception e) {
+            	System.err.println(e);
             }
         }
     }
