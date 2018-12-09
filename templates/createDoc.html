@@ -1,0 +1,96 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/static/bootstrap.min.css">
+<script type='text/javascript' src="https://code.jquery.com/jquery.min.js"></script>
+<link rel="stylesheet" href="/static/bootstrap-treeview.css">
+<script type='text/javascript' src="/static/bootstrap-treeview.js"></script>
+
+<title> 制作文档 </title>
+</head>
+
+<body>
+<div >
+	<a href="/app/hl">返回主界面</a>
+</div>
+
+<p>利用模板来制作文档</p>
+
+请选择所要制作的文档的标准名称，如：19489对应管理手册
+<div >
+	<select id="standard-dropdown" name="locality" ></select>
+	<input hidden type="text" class="input1"  name="standard_id" />
+</div>
+
+
+<button type="button" onclick="buildSectionTree()" id="buildSectionTree">显示目录</button>
+<div id="default-tree" ></div>
+
+
+
+</body>
+</html>
+
+<script>
+/* function setStandardId() {
+	var e = document.getElementById("standard-dropdown");
+	var value = e.options[e.selectedIndex].value;
+	$('.input1').val(value);
+} */
+
+function buildSectionTree() {
+	var e = document.getElementById("standard-dropdown");
+	var standardId = e.options[e.selectedIndex].value;
+	var url = "http://localhost:8777/sections?eq__standard_id="+standardId+"&order_by=section_number"
+	console.log(url);
+	// 显示目录
+	$.get(url,function(response) {
+		console.log(response.members);
+		buildTree(response.members);
+	}) 
+	// copy template file
+	$.post("http://localhost:8777/copyTemplate", {
+		standard_id : standardId
+	}, function(response) {
+		console.log(response.status); 
+		console.log("==============="); 
+		
+	}, "json");
+}
+function buildTree(sections) {
+	$('#default-tree').show()
+	$('#default-tree').treeview({
+        data: sections,
+        multiSelect: $('#chk-select-multi').is(':checked'),
+        onNodeSelected: function(event, node) {
+          $('#selectable-output').prepend('<p>' + node.text + ' was selected</p>');
+          console.log("selected: " + node.text);
+          console.log("selected: " + node.id);
+          selectNodeId = node.id
+          
+          url = '/editTemplate?section='+node.text;
+          popupWindow = window.open(url,
+  				'popUpWindow','height=300,width=400,left=10,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')
+     
+        },
+        onNodeUnselected: function (event, node) {
+          $('#selectable-output').prepend('<p>' + node.text + ' was unselected</p>');
+          console.log("selected: " + node.id + " on node function");
+          
+          
+        }
+     }); 
+}
+
+
+let dropdown = $('#standard-dropdown');
+dropdown.empty();
+dropdown.append('<option selected="true" disabled>选择</option>');
+dropdown.prop('selectedIndex', 0);
+$.get("http://localhost:8777/list-all-standards",function(response) {
+	console.log(response)
+	 $.each(response.data, function (data) {
+		 dropdown.append($('<option></option>').attr('value', response.data[data].id).text(response.data[data].title));
+	 })
+}) 
+</script>

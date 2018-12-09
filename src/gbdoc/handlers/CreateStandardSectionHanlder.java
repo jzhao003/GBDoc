@@ -35,8 +35,7 @@ public class CreateStandardSectionHanlder extends NannyHttpHandler {
 	}
 	
 	@Override
-	public Object doPost(Request request, Response response) throws Exception {
-		System.out.println("==============================");
+	public Object doPost(Request request, Response response)  {
 		List<Long> createdRecordIds = new ArrayList<Long>();
 		Map<String,String> section = null;
 		String standardId = null;
@@ -48,16 +47,19 @@ public class CreateStandardSectionHanlder extends NannyHttpHandler {
 				standardId = request.getParameter(pn);
 			}
 		}
-		
-		DaoManager daoManager = appCtx.getDaoManager();
-		SimplePoJoDAO dao = daoManager.getDao(StandardSection.class);
-		StandardSection pojo = null;
-		for (Map.Entry<String,String> entry : section.entrySet()) {
-			pojo = new StandardSection();
-			pojo.section_number = entry.getKey();
-			pojo.section_content = entry.getValue();
-			pojo.standard_id = Long.valueOf(standardId);
-			createdRecordIds.add(dao.insert(getConnection(), pojo).id);
+		try {
+			DaoManager daoManager = appCtx.getDaoManager();
+			SimplePoJoDAO dao = daoManager.getDao(StandardSection.class);
+			StandardSection pojo = null;
+			for (Map.Entry<String,String> entry : section.entrySet()) {
+				pojo = new StandardSection();
+				pojo.section_number = entry.getKey();
+				pojo.section_content = entry.getValue();
+				pojo.standard_id = Long.valueOf(standardId);
+				createdRecordIds.add(dao.insert(getConnection(), pojo).id);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return createdRecordIds;
 	}

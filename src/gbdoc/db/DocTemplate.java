@@ -37,13 +37,21 @@ public class DocTemplate implements ISimplePoJo {
 	@Column(name = "updated_by")
 	public Long updated_by = null;
 
-	@QueryStringField()
+	@QueryStringField(required=false)
 	@Column(name = "standard_section_id")
 	public Long standard_section_id = null;
 
-	@QueryStringField()
+	@QueryStringField(required=false)
 	@Column(name = "content")
 	public String content = null;
+	
+	@QueryStringField(required=false)
+	@Column(name = "standard_id")
+	public Long standard_id = null;
+	
+	@QueryStringField(required=false)
+	@Column(name = "file_path")
+	public String file_path = null;
 
 // ====User code begins here====
 // ====User code ends here====

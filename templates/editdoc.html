@@ -8,20 +8,15 @@
 	<script type='text/javascript' src="/static/bootstrap-treeview.js"></script>
 </header>
 <body>
-try to edit  
+开始编辑 
 
 <div id="edit_doc_div" >
 {{ var }}
 </div>
 
-<p id="demo"></p>
-
-<script>
-document.getElementById("demo").innerHTML = "Hello World!";
-</script>
 
 <div id="doc_save_div" >
-	<button type="button" onclick="saveContent()">Click Me!</button>
+	<button type="button" onclick="saveContent()">保存文档</button>
 </div>
 
 
@@ -48,28 +43,17 @@ function saveContent() {
 	//alert(getCount(element, false)); // Simply one level
 	// get the count of Input element in the Div,
 	var count = getCount(element, false);
-	
-	// 
+
 	var inputValues = [];
 	for (var i=1;i<=count;i++) {
 		inputValues[i-1]=$("#id"+i).val();
 	}
 	// 提交更新 
 	$.post( "http://localhost:8777/editTemplate", { 'keywords': inputValues } );
-/* 
-	$.post("http://localhost:8777/editTemplate", {
-		title : standard_title,
-		template_location : 12344
-	}, function(response) {
-		console.log(response.status); 
-		console.log(response.data.id); 
-		$("#result").data("standard_id", response.data.id);
-	}, "json"); */
+	window.close();
 }
 
 $.get("http://localhost:8777/editTemplate",function(response) {
 	console.log(response);
-	/*$("#doc_text_area").text(response);  
-	$("#doc_edit").text(response);*/
 }) 
 </script>

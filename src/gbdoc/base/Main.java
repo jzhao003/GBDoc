@@ -13,6 +13,7 @@ import gbdoc.handlers.GetWordDocHandler;
 import gbdoc.handlers.HtmlHandler;
 import gbdoc.handlers.ListAllHandler;
 import gbdoc.handlers.SectionTreeListHandler;
+import gbdoc.handlers.WordDocHandler;
 import gbdoc.upload.UploaderHttpHandler;
 
 public class Main {
@@ -48,6 +49,8 @@ public class Main {
 
 		// curl -XGET 'http://localhost:8777/sections?eq__standard_id=60&order_by=section_number'  query from StandardSection, and build result as tree
 		server.getServerConfiguration().addHttpHandler(new SectionTreeListHandler(StandardSection.class),"/sections");
+		
+		server.getServerConfiguration().addHttpHandler(new WordDocHandler(DocTemplate.class),"/copyTemplate");
 		
 		// insert into DocTemplate teble
 		server.getServerConfiguration().addHttpHandler(new CreateRecordsHandler(DocTemplate.class), "/DocTemplate");

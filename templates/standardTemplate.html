@@ -14,16 +14,17 @@
 
 请选择要添加模板的标准手册名称，如：19489对应管理手册
 <div >
-	<select id="standard-dropdown" name="locality"></select>
+	<select id="standard-dropdown" name="locality" onchange="setStandardIdToUploader()"></select>
 </div>
 <div >
 	<button id="show_button" onclick="showSectionContent()">显示目录</button>
+	<div id="default-tree" ></div>
 </div>
 
 <div >
 上传模板
 <form action="/upload" method="post" enctype="multipart/form-data">
-	Description: <input name="description"/>
+	Description: <input name="description"/> <input hidden type="text" class="input1"  name="standard_id" />
 	<br/>Select File: <input type="file" name="fileName"/>
 	<br/><input type="submit" value="Submit"/>
 </form>
@@ -32,11 +33,38 @@
 </html>
 
 <script>
+function setStandardIdToUploader() {
+	var e = document.getElementById("standard-dropdown");
+	var value = e.options[e.selectedIndex].value;
+	
+	$('.input1').val(value);
+	console.log(value);
+}
 
 function showSectionContent() {
 	var e = document.getElementById("standard-dropdown");
 	var value = e.options[e.selectedIndex].value;
-	console.log(value)
+	$.get("http://localhost:8777/sections?eq__standard_id="+value+"&order_by=section_number",function(response) {
+		console.log(response.members);
+		buildTree(response.members);
+	})  
+}
+function buildTree(sections) {
+	$('#default-tree').show()
+	$('#default-tree').treeview({
+        data: sections,
+        multiSelect: $('#chk-select-multi').is(':checked'),
+        onNodeSelected: function(event, node) {
+          $('#selectable-output').prepend('<p>' + node.text + ' was selected</p>');
+          console.log("selected: " + node.text);
+          console.log("selected: " + node.id);
+          selectNodeId = node.id
+        },
+        onNodeUnselected: function (event, node) {
+          $('#selectable-output').prepend('<p>' + node.text + ' was unselected</p>');
+         
+        }
+     }); 
 }
 
 let dropdown = $('#standard-dropdown');

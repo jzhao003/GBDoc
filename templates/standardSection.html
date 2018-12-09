@@ -28,8 +28,8 @@
 
 <div id="standard_content_div" >
 	输入标准手册内容：
-	<textarea rows="4" cols="50" id="standard_content"></textarea>
-	<button type="button" onclick="createNewstandard()" id="create_standard_button">创建目录</button>
+	<textarea rows="20" cols="50" id="standard_content"></textarea>
+	<button type="button" onclick="createSection()" id="create_standard_button">创建目录</button>
 </div>
 
 </body>
@@ -60,7 +60,7 @@ function createSection(){
 	var starand_id = $("#result").data("standard_id");
 	// 从UI上取得输入的目录
 	var section = $("#standard_content").val();
-	
+	console.log("get standardId: " + starand_id);
 	$.post("http://localhost:8777/section", {
 		sections : section,
 		standard_id : starand_id

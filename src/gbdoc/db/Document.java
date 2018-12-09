@@ -49,9 +49,11 @@ public class Document implements ISimplePoJo {
 	@Column(name = "updated_by")
 	public Long updated_by = null;
 
+	@QueryStringField()
 	@Column(name = "title")
 	public String title = null;
 
+	@QueryStringField()
 	@Column(name = "folder_name")
 	public String folder_name = null;
 

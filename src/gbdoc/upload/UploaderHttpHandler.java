@@ -94,6 +94,19 @@ public class UploaderHttpHandler extends HttpHandler {
 
 
         });
+        System.out.println(uploader.getStandardId());
+        System.out.println(uploader.getFilePath());
+        
+     // call api to insert into db
+        DocTemplate newPojo = new DocTemplate();
+        
+		DaoManager daoManager = new DaoManager();
+		SimplePoJoDAO dao = daoManager.getDao(DocTemplate.class);
+		newPojo.standard_id=Long.valueOf(uploader.getStandardId());
+		newPojo.file_path = uploader.getFilePath();
+		newPojo.standard_section_id=1L;
+		dao.insert(DBUtils.getDataSource(), newPojo);
+        
     }
 
     /**
@@ -102,6 +115,17 @@ public class UploaderHttpHandler extends HttpHandler {
     private static final class UploaderMultipartHandler
             implements MultipartEntryHandler {
         
+    	private StringBuilder filePath = new StringBuilder();
+    	private StringBuilder stanardId = new StringBuilder();
+    	
+    	public String getStandardId() {
+    		return this.stanardId.toString();
+    	}
+    	
+    	public String getFilePath() {
+    		return this.filePath.toString();
+    	}
+    	
         // upload number
         private final int uploadNumber;
         // number of bytes uploaded
@@ -122,16 +146,13 @@ public class UploaderHttpHandler extends HttpHandler {
             // get the multipart entry name
             final String name = contentDisposition.getDispositionParamUnquoted("name");
             
-//            System.out.println(contentDisposition.getDispositionParamUnquoted("name"));
-//            System.out.println(contentDisposition.getDispositionParamUnquoted("sid"));
-//            System.out.println("=======================");
             // if the multipart entry contains a file content
             if (FILENAME_ENTRY.equals(name)) {
 
                 // get the filename for Content-Disposition
                 final String filename =
                         contentDisposition.getDispositionParamUnquoted("filename");
-
+                filePath.append("upload/"+filename);
                 // Get the NIOInputStream to read the multipart entry content
                 final NIOInputStream inputStream = multipartEntry.getNIOInputStream();
 
@@ -142,26 +163,15 @@ public class UploaderHttpHandler extends HttpHandler {
                 inputStream.notifyAvailable(
                         new UploadReadHandler(uploadNumber, filename,
                         inputStream, uploadedBytesCounter));
-
             } else if (DESCRIPTION_NAME.equals(name)) { // if multipart entry contains a description field
                 LOGGER.log(Level.INFO, "Upload #{0}: description came. "
                         + "Skipping...", uploadNumber);
                 // skip the multipart entry
                 multipartEntry.skip();
-            }  else if ("id".equals(name)) { // if multipart entry contains a description field
-                LOGGER.log(Level.INFO, "Upload #{0}: description came. "
-                        + "Skipping...", uploadNumber);
+            }  else if ("standard_id".equals(name)) { 
                 final NIOInputStream inputStream = multipartEntry.getNIOInputStream();
-                inputStream.notifyAvailable(new ValueHandler(inputStream));
+                inputStream.notifyAvailable(new ValueHandler(inputStream,stanardId));
                 
-                // skip the multipart entry
-                //multipartEntry.skip();
-//                multipartEntry.getMultipartContext().getBoundary();
-//                multipartEntry.getContentDisposition().getDisposition();
-//                byte[] buf = new byte[2048];
-//                int readBytes = multipartEntry.getNIOInputStream().read(buf);
-//                String value = new String(buf,0,readBytes,"UTF-8");
-//                System.out.println(value);
             } else { // Unexpected entry?
                 LOGGER.log(Level.INFO, "Upload #{0}: unknown multipart entry. "
                         + "Skipping...", uploadNumber);
@@ -181,13 +191,14 @@ public class UploaderHttpHandler extends HttpHandler {
     }
     
     private static class ValueHandler implements ReadHandler {
+    	private StringBuilder standardId ;
     	private final byte[] buf;
     	private final NIOInputStream inputStream;
-    	private ValueHandler(final NIOInputStream inputStream)
+    	private ValueHandler(final NIOInputStream inputStream,
+    			final StringBuilder standardId)
                 throws FileNotFoundException {
-
             this.inputStream = inputStream;
-//            this.uploadedBytesCounter = uploadedBytesCounter;
+            this.standardId = standardId;
             buf = new byte[2048];
         }
 		@Override
@@ -197,8 +208,7 @@ public class UploaderHttpHandler extends HttpHandler {
                 // read the available bytes from input stream
                 final int readBytes = inputStream.read(buf);
                 // update the counter
-                String value = new String(buf,0,readBytes,"UTF-8");
-                System.out.println(value);
+                standardId.append(new String(buf,0,readBytes,"UTF-8"));
             }
 		}
 		@Override
@@ -208,9 +218,9 @@ public class UploaderHttpHandler extends HttpHandler {
                 // read the available bytes from input stream
                 final int readBytes = inputStream.read(buf);
                 // update the counter
-                String value = new String(buf,0,readBytes,"UTF-8");
-                System.out.println(value);
+                standardId.append(new String(buf,0,readBytes,"UTF-8"));
             }
+			inputStream.notifyAvailable(this);
 		}
 		@Override
 		public void onError(Throwable arg0) {
@@ -225,7 +235,6 @@ public class UploaderHttpHandler extends HttpHandler {
      * the specific file.
      */
     private static class UploadReadHandler implements ReadHandler {
-
         // the upload number
         private final int uploadNumber;
         // Non-blocking multipart entry input stream
@@ -245,7 +254,6 @@ public class UploaderHttpHandler extends HttpHandler {
                 final NIOInputStream inputStream,
                 final AtomicInteger uploadedBytesCounter)
                 throws FileNotFoundException {
-
             this.uploadNumber = uploadNumber;
             fileOutputStream = new FileOutputStream("upload/"+filename);
             this.inputStream = inputStream;
