@@ -57,7 +57,7 @@ public class Main {
 		
 		
 		// URL, http://localhost:8777/editTemplate
-		server.getServerConfiguration().addHttpHandler(new GetWordDocHandler(), "/editTemplate");
+		server.getServerConfiguration().addHttpHandler(new GetWordDocHandler(appCtx), "/editTemplate");
 		
 		
 		      

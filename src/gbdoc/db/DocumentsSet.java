@@ -49,6 +49,7 @@ public class DocumentsSet implements ISimplePoJo {
 	@Column(name = "updated_by")
 	public Long updated_by = null;
 
+	@QueryStringField()
 	@Column(name = "title")
 	public String title = null;
 

@@ -30,7 +30,7 @@ public class EditDoc {
 		for (XWPFParagraph paragraph : paragraphList) {
 			List<XWPFRun> runs = paragraph.getRuns();
 			// find the paragraph which is edited
-			if (!paragraph.getText().startsWith(inputValues[inputValues.length-1])) {
+			if (!paragraph.getText().startsWith("#"+inputValues[inputValues.length-1]+"#")) {
 				continue;
 			}
 			for (int i = 0; i < runs.size(); i++) {
