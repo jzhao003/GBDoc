@@ -19,17 +19,17 @@
 <div >
 	<button type="button" onclick="createNewstandard()" id="create_standard_button">创建标准</button>
 	<!-- 存储 standard_id -->
-	<div hidden id="result"></div>
-	
+	<div id="result"></div>
 </div>
 
 
-<div  ></div>
-
-<div id="standard_content_div" >
-	输入标准手册内容：
-	<textarea rows="20" cols="50" id="standard_content"></textarea>
-	<button type="button" onclick="createSection()" id="create_standard_button">创建目录</button>
+<div >
+上传标准手册
+<form action="/uploadStandard" method="post" enctype="multipart/form-data">
+	Description: <input name="description"/> <input type="text" id="standard_id" name="standardId" />
+	<br/>Select File: <input type="file" name="fileName"/>
+	<br/><input type="submit" value="Submit"/>
+</form>
 </div>
 
 </body>
@@ -47,29 +47,10 @@ function createNewstandard() {
 		console.log(response.status); 
 		console.log(response.data.id); 
 		$("#result").data("standard_id", response.data.id);
+		$("#standard_id").val(response.data.id);
 	}, "json");
 	$("#create_standard_button").hide() // 隐藏 ‘创建标准’ 按钮
 	$("#standard_title").hide()  // 隐藏 text 框
 }
 
-function createSection(){
-	// 创建目录，已经目录内容， 如 1.1 前言
-	// 输入必须是 数字开头，格式必须是 ，1.1.1，1.2， 7.1  ...
-	
-	// 从UI上取得 standardId
-	var starand_id = $("#result").data("standard_id");
-	// 从UI上取得输入的目录
-	var section = $("#standard_content").val();
-	console.log("get standardId: " + starand_id);
-	$.post("http://localhost:8777/section", {
-		sections : section,
-		standard_id : starand_id
-	}, function(response) {
-		console.log(response.status); 
-		console.log(response.data.id); 
-	}, "json");
-	/* $("#create_section_button").hide()
-	$("#input_section_content").hide()
-	$("#show_section_content").show() */
-}
 </script>

@@ -14,6 +14,7 @@ import gbdoc.handlers.HtmlHandler;
 import gbdoc.handlers.ListAllHandler;
 import gbdoc.handlers.SectionTreeListHandler;
 import gbdoc.handlers.WordDocHandler;
+import gbdoc.upload.UploadStandard;
 import gbdoc.upload.UploaderHttpHandler;
 
 public class Main {
@@ -56,15 +57,19 @@ public class Main {
 		server.getServerConfiguration().addHttpHandler(new CreateRecordsHandler(DocTemplate.class), "/DocTemplate");
 		
 		
+		// 解压缩zip文件
+		
 		// URL, http://localhost:8777/editTemplate
 		server.getServerConfiguration().addHttpHandler(new GetWordDocHandler(appCtx), "/editTemplate");
 		
 		
-		      
+		
         // Map the path /upload to the UploaderHttpHandler
         server.getServerConfiguration().addHttpHandler(new UploaderHttpHandler(), "/upload");
-
         
+        // upload standard, 
+		server.getServerConfiguration().addHttpHandler(new UploadStandard(), "/uploadStandard");
+       
 		try {
 
 			server.start();
