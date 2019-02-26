@@ -40,7 +40,10 @@ function getCount(parent, getChildrensChildren){
 
 function saveContent() {
 	var element = document.getElementById("edit_doc_div");
-	//alert(getCount(element, false)); // Simply one level
+	
+	var fileName = document.getElementById("fileName").value;
+	var sectionNumber = document.getElementById("sectionNumber").value;
+	
 	// get the count of Input element in the Div,
 	var count = getCount(element, false);
 
@@ -49,7 +52,7 @@ function saveContent() {
 		inputValues[i-1]=$("#id"+i).val();
 	}
 	// 提交更新 
-	$.post( "http://localhost:8777/editTemplate", { 'keywords': inputValues } );
+	$.post( "http://localhost:8777/editTemplate", { 'keywords': inputValues,'fileName':fileName, 'sectionNumber':sectionNumber} );
 	window.close();
 }
 

@@ -9,13 +9,12 @@ import gbdoc.db.StandardSection;
 import gbdoc.handlers.CreateRecordsHandler;
 import gbdoc.handlers.CreateStandardSectionHanlder;
 import gbdoc.handlers.GetFromStanardTableHandler;
-import gbdoc.handlers.GetWordDocHandler;
+import gbdoc.handlers.WordDocHandler;
 import gbdoc.handlers.HtmlHandler;
 import gbdoc.handlers.ListAllHandler;
 import gbdoc.handlers.SectionTreeListHandler;
-import gbdoc.handlers.WordDocHandler;
 import gbdoc.upload.UploadStandard;
-import gbdoc.upload.UploaderHttpHandler;
+import gbdoc.upload.UploadStandardTemplateFiles;
 
 public class Main {
 	private static final int PORT = 8777;
@@ -51,25 +50,24 @@ public class Main {
 		// curl -XGET 'http://localhost:8777/sections?eq__standard_id=60&order_by=section_number'  query from StandardSection, and build result as tree
 		server.getServerConfiguration().addHttpHandler(new SectionTreeListHandler(StandardSection.class),"/sections");
 		
-		server.getServerConfiguration().addHttpHandler(new WordDocHandler(DocTemplate.class),"/copyTemplate");
-		
-		// insert into DocTemplate teble
+		// insert into DocTemplate teble TO BE DELETED
 		server.getServerConfiguration().addHttpHandler(new CreateRecordsHandler(DocTemplate.class), "/DocTemplate");
 		
 		
-		// 解压缩zip文件
 		
 		// URL, http://localhost:8777/editTemplate
-		server.getServerConfiguration().addHttpHandler(new GetWordDocHandler(appCtx), "/editTemplate");
+		server.getServerConfiguration().addHttpHandler(new WordDocHandler(appCtx), "/editTemplate");
 		
 		
-		
-        // Map the path /upload to the UploaderHttpHandler
-        server.getServerConfiguration().addHttpHandler(new UploaderHttpHandler(), "/upload");
-        
         // upload standard, 
 		server.getServerConfiguration().addHttpHandler(new UploadStandard(), "/uploadStandard");
+
+        // upload templates, zip files, 
+		server.getServerConfiguration().addHttpHandler(new UploadStandardTemplateFiles(), "/uploadTemplates");
        
+		// download, 
+		StaticHttpHandler staticHttpHandler = new StaticHttpHandler("download");
+		server.getServerConfiguration().addHttpHandler(staticHttpHandler, "/download");
 		try {
 
 			server.start();

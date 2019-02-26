@@ -16,18 +16,16 @@
 <div >
 	<select id="standard-dropdown" name="locality" onchange="setStandardIdToUploader()"></select>
 </div>
-<div >
-	<button id="show_button" onclick="showSectionContent()">显示目录</button>
-	<div id="default-tree" ></div>
-</div>
+
 
 <div >
 上传模板
-<form action="/upload" method="post" enctype="multipart/form-data">
-	Description: <input name="description"/> <input hidden type="text" class="input1"  name="standard_id" />
-	<br/>Select File: <input type="file" name="fileName"/>
+<form action="/uploadTemplates" method="post" enctype="multipart/form-data">
+	Description: <input name="description"/> 
+	<br/>Select File: <input type="file" name="zips"/> <input type="text" id="standard_id" name="standardId" />
 	<br/><input type="submit" value="Submit"/>
 </form>
+
 </div>
 </body>
 </html>
@@ -36,8 +34,8 @@
 function setStandardIdToUploader() {
 	var e = document.getElementById("standard-dropdown");
 	var value = e.options[e.selectedIndex].value;
-	
-	$('.input1').val(value);
+
+	$("#standard_id").val(value);
 	console.log(value);
 }
 

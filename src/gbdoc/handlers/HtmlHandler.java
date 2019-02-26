@@ -14,12 +14,8 @@ public class HtmlHandler extends NannyHttpHandler {
 
 	@Override
     public Object doGet(Request request, Response response) throws Exception {
-//        JtwigTemplate t = JtwigTemplate.fileTemplate(new File("templates/simple.twig"));
-//		JtwigTemplate t = JtwigTemplate.fileTemplate(new File("templates/hello.html"));
         JtwigTemplate t = JtwigTemplate.fileTemplate(new File("templates/main.html"));
         JtwigModel m = JtwigModel.newModel();
-//        m.with("var", "zhao");
-//        m.with("text", "sshsss");
         ModelAndTemplate ret = new ModelAndTemplate(m, t);
         return ret;
     }

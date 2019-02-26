@@ -26,7 +26,7 @@
 <div >
 上传标准手册
 <form action="/uploadStandard" method="post" enctype="multipart/form-data">
-	Description: <input name="description"/> <input type="text" id="standard_id" name="standardId" />
+	Description: <input name="description"/> <input hidden type="text" id="standard_id" name="standardId" />
 	<br/>Select File: <input type="file" name="fileName"/>
 	<br/><input type="submit" value="Submit"/>
 </form>

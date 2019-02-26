@@ -19,7 +19,6 @@
 请选择所要制作的文档的标准名称，如：19489对应管理手册
 <div >
 	<select id="standard-dropdown" name="locality" ></select>
-	<input hidden type="text" class="input1"  name="standard_id" />
 </div>
 
 
@@ -27,16 +26,15 @@
 <div id="default-tree" ></div>
 
 
-
+下载
+<form method="get" action="/download/test.txt">
+   <button type="submit">Download!</button>
+</form>
 </body>
 </html>
 
 <script>
-/* function setStandardId() {
-	var e = document.getElementById("standard-dropdown");
-	var value = e.options[e.selectedIndex].value;
-	$('.input1').val(value);
-} */
+
 
 function buildSectionTree() {
 	var e = document.getElementById("standard-dropdown");
@@ -58,6 +56,8 @@ function buildSectionTree() {
 	}, "json");
 }
 function buildTree(sections) {
+	var e = document.getElementById("standard-dropdown");
+	var standardId = e.options[e.selectedIndex].value;
 	$('#default-tree').show()
 	$('#default-tree').treeview({
         data: sections,
@@ -68,7 +68,7 @@ function buildTree(sections) {
           console.log("selected: " + node.id);
           selectNodeId = node.id
           
-          url = '/editTemplate?section='+node.id;
+          url = '/editTemplate?section='+node.id+'&standardId='+standardId;
           popupWindow = window.open(url,
   				'popUpWindow','height=300,width=400,left=10,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')
 
