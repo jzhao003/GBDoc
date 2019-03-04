@@ -1,8 +1,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+
 <link rel="stylesheet" href="/static/bootstrap.min.css">
-<script type='text/javascript' src="https://code.jquery.com/jquery.min.js"></script>
+<script type='text/javascript' src="/static/jquery.min.js"></script>
+<script type='text/javascript' src="/static/jquery.fileDownload.js"></script>
 <link rel="stylesheet" href="/static/bootstrap-treeview.css">
 <script type='text/javascript' src="/static/bootstrap-treeview.js"></script>
 
@@ -27,15 +31,38 @@
 
 
 下载
-<form method="get" action="/download/test.txt">
+<form method="get" action="{{zipPath}}">
    <button type="submit">Download!</button>
 </form>
+
+<!--  <button type="submit" onclick="downloadZip()">tttt!</button>
+<a id="zip"></a>-->
+
 </body>
 </html>
 
 <script>
 
+function downloadZip() {
+	var standardId = getStandardIdFromDropDownElement();
+	var url = "http://localhost:8777/generateDoc?eq__standard_id="+standardId;
+	
+	/* $.get(url,function(response) {
+		console.log(response)
+	}) ; */
+	
+	
+	$.fileDownload('/download/ztools.sql')
+    .done(function () { alert('File download a success!'); })
+    .fail(function () { alert('File download failed!'); }); 
+	
+}
 
+function getStandardIdFromDropDownElement() {
+	var e = document.getElementById("standard-dropdown");
+	var standardId = e.options[e.selectedIndex].value;
+	return standardId;
+}
 function buildSectionTree() {
 	var e = document.getElementById("standard-dropdown");
 	var standardId = e.options[e.selectedIndex].value;

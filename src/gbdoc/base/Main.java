@@ -8,11 +8,12 @@ import gbdoc.db.Standard;
 import gbdoc.db.StandardSection;
 import gbdoc.handlers.CreateRecordsHandler;
 import gbdoc.handlers.CreateStandardSectionHanlder;
+import gbdoc.handlers.GenerateDocsAndDownloadZip;
 import gbdoc.handlers.GetFromStanardTableHandler;
-import gbdoc.handlers.WordDocHandler;
 import gbdoc.handlers.HtmlHandler;
 import gbdoc.handlers.ListAllHandler;
 import gbdoc.handlers.SectionTreeListHandler;
+import gbdoc.handlers.WordDocHandler;
 import gbdoc.upload.UploadStandard;
 import gbdoc.upload.UploadStandardTemplateFiles;
 
@@ -65,6 +66,8 @@ public class Main {
         // upload templates, zip files, 
 		server.getServerConfiguration().addHttpHandler(new UploadStandardTemplateFiles(), "/uploadTemplates");
        
+		// zip file
+		server.getServerConfiguration().addHttpHandler(new GenerateDocsAndDownloadZip(appCtx),"/generateDoc");
 		// download, 
 		StaticHttpHandler staticHttpHandler = new StaticHttpHandler("download");
 		server.getServerConfiguration().addHttpHandler(staticHttpHandler, "/download");
