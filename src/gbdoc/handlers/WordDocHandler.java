@@ -126,7 +126,7 @@ public class WordDocHandler extends NannyHttpHandler {
 			int inputIdNumber = 1;
 			for (XWPFParagraph para : paragraphList) {
 				boolean redFlag = false;
-				wordFileContent.append("\r\n");
+				wordFileContent.append("<p  class=\"ex2\">    ");
 				List<XWPFRun> runs = para.getRuns();
 				for (XWPFRun run : runs) {
 					String text = run.getText(0);
@@ -156,6 +156,7 @@ public class WordDocHandler extends NannyHttpHandler {
 						}
 					}
 				}
+				wordFileContent.append("</p>");
 			}
 		}
 		wordFileContent.append("<input hidden id='fileName' value='"+gbFileParagraph.getFile()+"'></input>");
