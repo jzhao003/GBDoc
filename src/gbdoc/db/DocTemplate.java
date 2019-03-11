@@ -41,6 +41,7 @@ public class DocTemplate implements ISimplePoJo {
 	@Column(name = "standard_id")
 	public Long standard_id = null;
 	
+	// 模板文件路径
 	@QueryStringField(required=false)
 	@Column(name = "file_path")
 	public String file_path = null;

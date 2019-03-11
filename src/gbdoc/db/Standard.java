@@ -42,6 +42,7 @@ public class Standard implements ISimplePoJo {
 	@Column(name = "title")
 	public String title = null;
 
+	// this is the Standard file's folder, like upload/2019-02-19 21:51:53/CL05认可准则.docx
 	@QueryStringField(required=false)
 	@Column(name = "template_location")
 	public String template_location = null;

@@ -49,9 +49,11 @@ public class StandardSection implements ISimplePoJo {
 	@Column(name = "standard_id")
 	public Long standard_id = null;
 
+	// no use, to be deleted?
 	@Column(name = "doc_title")
 	public String doc_title = null;
 
+	// no use, to be deleted?
 	@QueryStringField(required=false)
 	@Column(name = "location")
 	public Integer location = null;
