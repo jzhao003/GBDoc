@@ -24,13 +24,13 @@ import javax.persistence.Id;
 import java.math.BigDecimal;
 import javax.sql.DataSource;
 
-@Entity(name = "standard")
-@Table(name = "standard")
-public class Standard implements ISimplePoJo {
+@Entity(name = "created_document")
+@Table(name = "created_document")
+public class CreatedDocument implements ISimplePoJo {
 @Override
 		public void setId(long id) {
 			this.id = id;
-		}	public static SimplePoJoDAO dao = new SimplePoJoDAO(Standard.class);;
+		}	public static SimplePoJoDAO dao = new SimplePoJoDAO(CreatedDocument.class);;
 
 	@Id()
 	@GeneratedValue()
@@ -49,11 +49,14 @@ public class Standard implements ISimplePoJo {
 	@Column(name = "updated_by")
 	public Long updated_by = null;
 
-	@Column(name = "title")
-	public String title = null;
+	/*
+	保存这套文档的目录。目录里面的是从上传的模板copy后 填上用户输入字段的文件。	
+	*/
+	@Column(name = "folder_name")
+	public String folder_name = null;
 
-	@Column(name = "template_location")
-	public String template_location = null;
+	@Column(name = "standard_id")
+	public Long standard_id = null;
 
 // ====User code begins here====
 // ====User code ends here====

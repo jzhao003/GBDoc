@@ -24,13 +24,13 @@ import javax.persistence.Id;
 import java.math.BigDecimal;
 import javax.sql.DataSource;
 
-@Entity(name = "standard")
-@Table(name = "standard")
-public class Standard implements ISimplePoJo {
+@Entity(name = "doc_field")
+@Table(name = "doc_field")
+public class DocField implements ISimplePoJo {
 @Override
 		public void setId(long id) {
 			this.id = id;
-		}	public static SimplePoJoDAO dao = new SimplePoJoDAO(Standard.class);;
+		}	public static SimplePoJoDAO dao = new SimplePoJoDAO(DocField.class);;
 
 	@Id()
 	@GeneratedValue()
@@ -49,11 +49,14 @@ public class Standard implements ISimplePoJo {
 	@Column(name = "updated_by")
 	public Long updated_by = null;
 
-	@Column(name = "title")
-	public String title = null;
+	@Column(name = "created_document_id")
+	public Long created_document_id = null;
 
-	@Column(name = "template_location")
-	public String template_location = null;
+	@Column(name = "name")
+	public String name = null;
+
+	@Column(name = "field_value")
+	public String field_value = null;
 
 // ====User code begins here====
 // ====User code ends here====

@@ -37,11 +37,9 @@ public class User implements ISimplePoJo {
 	@Column(name = "id")
 	public Long id = null;
 
-	@QueryStringField()
 	@Column(name = "name")
 	public String name = null;
 
-	@QueryStringField()
 	@Column(name = "role")
 	public String role = null;
 

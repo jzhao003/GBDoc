@@ -26,17 +26,26 @@ public class GeneratorLauncher {
         generator.generateAndWrite(ds, "gb-doc", "user", "src", "gbdoc.db",
                 "User");
 
-        generator.generateAndWrite(ds, "gb-doc", "document", "src", "gbdoc.db",
-                "Document");
-
-        generator.generateAndWrite(ds, "gb-doc", "documents_set", "src",
-                "gbdoc.db", "DocumentsSet");
+//        generator.generateAndWrite(ds, "gb-doc", "document", "src", "gbdoc.db",
+//                "Document");
+//
+//        generator.generateAndWrite(ds, "gb-doc", "documents_set", "src",
+//                "gbdoc.db", "DocumentsSet");
 
         generator.generateAndWrite(ds, "gb-doc", "standard_section", "src",
                 "gbdoc.db", "StandardSection");
 
         generator.generateAndWrite(ds, "gb-doc", "doc_template", "src",
                 "gbdoc.db", "DocTemplate");
+        
+        generator.generateAndWrite(ds, "gb-doc", "standard_section_file", "src",
+                "gbdoc.db", "StandardSectionFile");
+        generator.generateAndWrite(ds, "gb-doc", "created_document", "src",
+                "gbdoc.db", "CreatedDocument");
+        generator.generateAndWrite(ds, "gb-doc", "doc_field", "src",
+                "gbdoc.db", "DocField");
+        generator.generateAndWrite(ds, "gb-doc", "standard_section_field", "src",
+                "gbdoc.db", "StandardSectionField");
 
     }
 }
