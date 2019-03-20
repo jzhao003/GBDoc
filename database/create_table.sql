@@ -59,7 +59,7 @@ CREATE TABLE `standard_section_file` (
    CONSTRAINT `standard_section_file_ibfk_1` FOREIGN KEY (`standard_section_id`) REFERENCES `standard_section` (`id`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='记录标准目录项对应的文件名，一个目录项有可能由多个文件里的段落构成。一个文件也可能包含多个段落构成不同的目录项。这个表的目的是快速找到给定的目录项所对应的文件。这个是模板的一部分。'
 
-不必建表表示模板中的单个文件了，用模板id和文件名来定位单个文件。
+--不必建表表示模板中的单个文件了，用模板id和文件名来定位单个文件。
 
 
 

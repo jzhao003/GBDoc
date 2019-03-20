@@ -49,9 +49,11 @@ public class Standard implements ISimplePoJo {
 	@Column(name = "updated_by")
 	public Long updated_by = null;
 
+	@QueryStringField()
 	@Column(name = "title")
 	public String title = null;
 
+	@QueryStringField()
 	@Column(name = "template_location")
 	public String template_location = null;
 
