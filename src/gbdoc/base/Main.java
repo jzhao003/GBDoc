@@ -8,6 +8,7 @@ import gbdoc.db.Standard;
 import gbdoc.db.StandardSection;
 import gbdoc.handlers.CreateRecordsHandler;
 import gbdoc.handlers.CreateStandardSectionHanlder;
+import gbdoc.handlers.CreatedDocumentHandler;
 import gbdoc.handlers.GenerateDocsAndDownloadZip;
 import gbdoc.handlers.GetFromStanardTableHandler;
 import gbdoc.handlers.HtmlHandler;
@@ -32,9 +33,12 @@ public class Main {
 		// http://localhost:8777/app/hl , home page
 		server.getServerConfiguration().addHttpHandler(new HtmlHandler(), "/app/hl");
 
-		// curl -XPOST -d 'title=1&template_location=11' 'http://localhost:8777/add'   insert into Standard table 
+		// curl -XPOST -d 'title=1&template_location=11' 'http://localhost:8777/addStandard'   insert into Standard table 
 		server.getServerConfiguration().addHttpHandler(new CreateRecordsHandler(Standard.class), "/addStandard");
 		
+		// insert into created_document table 
+		server.getServerConfiguration().addHttpHandler(new CreatedDocumentHandler(appCtx), "/createdDocument");
+				
 		// get StanardTable record by id
 		// curl -XGET 'http://localhost:8777/id?id=42'
 		server.getServerConfiguration().addHttpHandler(new GetFromStanardTableHandler(appCtx), "/id");

@@ -7,12 +7,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
+import gbdoc.doc.FileListContainsSection;
 import gbdoc.doc.GbFileParagraph;
 
 public class GbDocFileUtil {
@@ -36,19 +38,21 @@ public class GbDocFileUtil {
 					String text = run.getText(0);
 					// 去掉 section number
 					if (text.equals("#" + section + "#")) {
-						run.setText("", 0);
-						run.setColor("000000");
+//						run.setText("", 0);
+//						run.setColor("000000");
 						continue;
 					}
 					if (redFlag) {
 						// 如果前面一个run是红色字符
 						if (isRedFont(run.getColor())) {
-							run.setColor("000000");
-							run.setText("", 0);
+//							run.setColor("000000");
+//							run.setText("", 0);
 							redFlag = true;
 						} else {
+							// 在自己增加的字符前后加 *######** ， 变成 *######**abc*######**
 							// 如果前面一个run是红色，而当前run不是，则 先replace template，再把当前run的字符加在后面
-							run.setText(inputValues[inputValueIndex] + text, 0);
+							// run.setText(inputValues[inputValueIndex]+text,0);
+							run.setText("*######**" + inputValues[inputValueIndex] + "*######**" + text, 0);
 							inputValueIndex++;
 							redFlag = false;
 						}
@@ -57,8 +61,8 @@ public class GbDocFileUtil {
 							// 如果当前字符是红色，flag设置成 true
 							redFlag = true;
 							// 如果当前run也是红色字符，则改为白色，并删除
-							run.setColor("000000");
-							run.setText("", 0);
+//							run.setColor("000000");
+//							run.setText("", 0);
 						} else {
 							redFlag = false;
 						}
@@ -149,7 +153,7 @@ public class GbDocFileUtil {
 					gbFileParagraph = findParagraphsInDirectory(file, section);
 				} else {
 					if (getFileExtendName(file.getName()).equals("docx") && file.length() != 0) {
-						System.out.println(file.getAbsolutePath());
+//						System.out.println(file.getAbsolutePath());
 						gbFileParagraph = findParagraphs(file, section);
 
 					}
@@ -163,9 +167,34 @@ public class GbDocFileUtil {
 		return (color != null) && (color.equals("FF0000"));
 	}
 
+	/**
+	 * @param templatesPath, uploaded template file path
+	 * @return download templates file path
+	 *  */
+	public static String copyTemplatesFromUploadToDownLoadFolder(String templatesPath) {
+		File file = new File("download/" + templatesPath.replace("upload/", ""));
+		if (!file.exists()) {
+			file.mkdirs();
+			// copy templates from upload/ folder to download/ folder
+			try {
+				FileUtils.copyDirectory(new File(templatesPath), file);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return file.getPath();
+	}
+	
 	public static void main(String args[]) {
-		File file = new File("/Users/jzhao/work/temp/2第二章 组织和管理.docx");
+		File file = new File("/Users/jzhao/work/my/gbdoc/latest_sample_doc/templates");
 		String[] input = { "Hello", "World", "c", "d", "e" };
-		replaceTemplatesWord(file, "7.1.1", input);
+		FileListContainsSection fs = new FileListContainsSection();
+		fs.findFileNameInDirectory(file, "7.1.1");
+		List<File> files = fs.getFileList();
+		System.out.println(files.size());
+		for (File f : files) {
+			System.out.println(f.getAbsolutePath());
+		}
 	}
 }

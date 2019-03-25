@@ -25,6 +25,8 @@
 	<select id="standard-dropdown" name="locality" ></select>
 </div>
 
+<button type="button" onclick="initialCreatedDoc()" id="initialCreatedDoc">创建文档</button>
+<input hidden type="text" id="created_document_id" name="created_document_id" />
 
 <button type="button" onclick="buildSectionTree()" id="buildSectionTree">显示目录</button>
 <div id="default-tree" ></div>
@@ -42,6 +44,18 @@
 </html>
 
 <script>
+
+function initialCreatedDoc() {
+	var standardId = getStandardIdFromDropDownElement();
+	$.post("http://localhost:8777/createdDocument", {
+		standard_id : standardId
+	}, function(response) {
+		console.log(response.status); 
+		console.log(response.data.id); 
+		$("#result").data("created_document_id", response.data.id);
+		$("#created_document_id").val(response.data.id);
+	}, "json");
+}
 
 function downloadZip() {
 	var standardId = getStandardIdFromDropDownElement();
